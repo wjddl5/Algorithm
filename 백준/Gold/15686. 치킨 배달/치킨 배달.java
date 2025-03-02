@@ -5,9 +5,8 @@ public class Main {
 	
 	static int N, M;
 	static int[][] chi_ar, home_ar;
-	static boolean[] visit;
 	static int[][] dis_ar;
-	static ArrayList<Integer> dis_list = new ArrayList<>();
+	static int minDist = Integer.MAX_VALUE;
 	static int[] ar;
 	
 	public static void main(String[] args) throws Exception{
@@ -35,7 +34,6 @@ public class Main {
 		chi_ar = new int[chi_list.size()][2];
 		home_ar = new int[home_list.size()][2];
 		dis_ar = new int[chi_list.size()][home_list.size()];
-		visit = new boolean[chi_list.size()];
 		ar = new int[M];
 
 		chi_list.toArray(chi_ar);
@@ -43,7 +41,7 @@ public class Main {
 
 		setDis();
 		selectM(0, 0);
-		System.out.println(findMin());
+		System.out.println(minDist);
 	}
 	
 	public static void setDis() {
@@ -56,35 +54,24 @@ public class Main {
 
 	public static void selectM(int cnt, int start) {
 		if(cnt == M) {
-			setMin(ar);
+			setMin();
 			return;
 		}
 		for(int i=start; i<chi_ar.length; i++) {
-			if(visit[i]) continue;
-			visit[i] = true;
 			ar[cnt] = i;
-			selectM(cnt+1, start+1);
-			visit[i] = false;
+			selectM(cnt+1, i+1);
 		}
 	}
 
-	public static void setMin(int[] ar) {
-		int res = 0;
-		for(int j=0; j<home_ar.length; j++) {
-			int temp = Integer.MAX_VALUE;
-			for(int i : ar) {
-				temp = Math.min(dis_ar[i][j], temp);
-			}
-			res += temp;
-		}
-		dis_list.add(res);
-	}
-
-	public static int findMin() {
-		int res = Integer.MAX_VALUE;
-		for(int i : dis_list){
-			res = Math.min(i, res);
-		}
-		return res;
+	public static void setMin() {
+		 int res = 0;
+        for (int j = 0; j < home_ar.length; j++) {
+            int temp = Integer.MAX_VALUE;
+            for (int i : ar) {
+                temp = Math.min(temp, dis_ar[i][j]);
+            }
+            res += temp;
+        }
+        minDist = Math.min(minDist, res);
 	}
 }
