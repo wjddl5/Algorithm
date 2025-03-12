@@ -4,6 +4,7 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) throws Exception {
+        
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         int n  = Integer.parseInt(st.nextToken());
@@ -19,14 +20,15 @@ public class Main {
         for(int i=0; i<m; i++) {
             answer += ar[i];
         }
-        
+
         sum = answer;
-        for(int i=1; i<=n-m; i++) {
-            sum = sum + ar[i+m-1] - ar[i-1];
+        int idx = 0;
+
+        for(int i=m; i<n; i++) {
+            sum = sum + ar[i] - ar[idx++];
             if(answer < sum) answer = sum;
         }
 
-        br.close();
         System.out.println(answer);
     }
 
