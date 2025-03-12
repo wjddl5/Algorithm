@@ -34,20 +34,20 @@ public class Main {
     }
 
     public static void find() {
-        int cnt = 0;
-        while(cnt < n){
-            for(int i=1; i<=n; i++) {
-                if(ar[i] != 0) continue;
-                
-                sb.append(i).append(" ");
-                ar[i] = -1;
+        Queue<Integer> queue = new ArrayDeque<>();
+        for(int i=1; i<=n; i++) {
+            if(ar[i] == 0) queue.offer(i);
+        }
 
-                for(int node : graph.get(i)) {
-                    ar[node] -= 1;
-                }
-                cnt++;
+        while(!queue.isEmpty()) {
+            int n = queue.poll();
+            sb.append(n).append(" ");
+
+            for(int node : graph.get(n)){
+                ar[node] -= 1;
+                if(ar[node] == 0) queue.offer(node);
             }
         }
     }
-    
+
 }
