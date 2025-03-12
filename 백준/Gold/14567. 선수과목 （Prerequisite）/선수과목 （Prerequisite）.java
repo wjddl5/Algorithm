@@ -2,63 +2,71 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-	
-	static int N, M, cnt=1;
-	static boolean[][] chk;
-	static int[] ar;
 
-	public static void main(String[] args) throws Exception{
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringBuilder sb = new StringBuilder();
+    static StringBuilder sb = new StringBuilder();
+    static int n, m;
+    static int[] ar, answer;
+    static ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
 
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		N = Integer.parseInt(st.nextToken());
-		M = Integer.parseInt(st.nextToken());
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-		ar = new int[N];
-		chk = new boolean[N+1][N+1];
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
 
-		for(int m=0; m<M; m++) {
-			st = new StringTokenizer(br.readLine());
-			int i = Integer.parseInt(st.nextToken());
-			int j = Integer.parseInt(st.nextToken());
-			chk[i][j] = true;
-		}
+        ar = new int[n+1];
+        answer = new int[n+1];
 
-		// --
-		while(true){
-			ArrayList<Integer> list = new ArrayList<>();
-			if(checkEnd()) break;
+        for(int i=0; i<=n; i++) {
+            graph.add(new ArrayList<>());
+        }
 
-			for(int j=1; j<=N; j++){		
-				if(check(j)){
-					ar[j-1] = cnt;
-					chk[0][j] = true;
-					list.add(j);
-				}
-			}
-			for(int j : list){
-				Arrays.fill(chk[j], false);
-			}
-			cnt++;
-		}
-		for(int n : ar) {
-			sb.append(n).append(" ");
-		}
-		System.out.println(sb);
-	}
+        for(int i=0; i<m; i++) {
+            st = new StringTokenizer(br.readLine());
+            int first = Integer.parseInt(st.nextToken());
+            int second = Integer.parseInt(st.nextToken());
+            graph.get(first).add(second);
+            ar[second] += 1;
+        }
+        find();
 
-	public static boolean check(int j) {
-		for(int i=0; i<=N; i++) {
-			if(chk[i][j]) return false;
-		}
-		return true;
-	}
+        for(int i=1; i<=n; i++) {
+            sb.append(answer[i]).append(" ");
+        }
+        System.out.println(sb);
+    }
 
-	public static boolean checkEnd() {
-		for(int i=1; i<=N; i++){
-			if(!chk[0][i]) return false;
-		}
-		return true;
-	}
+    public static void find() {
+        Queue<Integer> queue = new ArrayDeque<>();
+        int answer_cnt = 1;
+        int cnt = 0;
+        
+        for(int i=1; i<=n; i++) {
+            if(ar[i] == 0) queue.offer(i);
+        }
+        
+        while(cnt < n) {
+            ArrayList<Integer> list = new ArrayList<>();
+            
+            while(!queue.isEmpty()) {
+                int n = queue.poll();
+                answer[n] = answer_cnt;
+                cnt ++;
+                
+                for(int node : graph.get(n)) {
+                    ar[node] -= 1;
+                    if(ar[node] == 0) list.add(node);
+                }
+                
+            }
+            if(!list.isEmpty()) {
+                for(int node : list) {
+                    queue.offer(node);
+                }
+            }
+            answer_cnt ++;
+        }
+
+    }
 }
