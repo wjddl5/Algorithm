@@ -19,15 +19,14 @@ public class Main {
         for(int i=0; i<m; i++) {
             answer += ar[i];
         }
-
+        
         sum = answer;
-        int idx = 0;
-
-        for(int i=m; i<n; i++) {
-            sum = sum + ar[i] - ar[idx++];
+        for(int i=1; i<=n-m; i++) {
+            sum = sum + ar[i+m-1] - ar[i-1];
             if(answer < sum) answer = sum;
         }
 
+        br.close();
         System.out.println(answer);
     }
 
