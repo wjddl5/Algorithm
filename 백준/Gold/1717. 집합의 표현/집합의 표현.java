@@ -9,6 +9,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
+        StringBuilder sb = new StringBuilder();
 
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
@@ -31,9 +32,10 @@ public class Main {
             if(check == 0) {
                 connect(root, node);
             }else {
-                System.out.println(getGroupOf(root) == getGroupOf(node)? "YES" : "NO");
+                sb.append(getGroupOf(root) == getGroupOf(node)? "YES" : "NO").append('\n');
             }
         }
+        System.out.println(sb);
     }
 
     public static int getGroupOf(int node) {
