@@ -1,6 +1,7 @@
-
+[문제링크](https://www.codetree.ai/ko/frequent-problems/problems/ancient-ruin-exploration/description?open=true&introductionSetId=&bookmarkId=) <br/>
+# 삼성SW역량테스트 [고대 문명 유적 탐사]   
+### 성능요약
 Runtime : 98ms   
-Memory : 9MB   
-Language : Java   
--- 
-![Image](https://github.com/user-attachments/assets/be549833-496a-4c38-a6e2-c4325bfb5227)
+Memory : 9MB
+### 제출일자
+2025-03-11 / 16:29
