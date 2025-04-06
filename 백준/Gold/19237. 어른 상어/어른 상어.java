@@ -67,19 +67,22 @@ public class Main {
                 int nk, nx, ny;
                 switch (check) {
                     case 0:
-                        nk = sharkDir[shark.num][shark.dir][0];
-                        nx = shark.x + dx[nk];
-                        ny = shark.y + dy[nk];
-                        if(nx<0 || ny<0 || nx>=N || ny>=N) continue;
-                        map[shark.x][shark.y] = null;
-                        shark.x = nx;
-                        shark.y = ny;
-                        shark.dir = nk;
-                        if(map[nx][ny] != null) {
-                            deadShark++;
-                            sharks[map[nx][ny].num] = null;
+                        for(int k=0; k<4; k++) {
+                            nk = sharkDir[shark.num][shark.dir][k];
+                            nx = shark.x + dx[nk];
+                            ny = shark.y + dy[nk];
+                            if(nx<0 || ny<0 || nx>=N || ny>=N) continue;
+                            map[shark.x][shark.y] = null;
+                            shark.x = nx;
+                            shark.y = ny;
+                            shark.dir = nk;
+                            if(map[nx][ny] != null) {
+                                deadShark++;
+                                sharks[map[nx][ny].num] = null;
+                            }
+                            map[nx][ny] = shark;
+                            break;
                         }
-                        map[nx][ny] = shark;
                         break;
                     case 1:
                         for(int k=0; k<4; k++) {
