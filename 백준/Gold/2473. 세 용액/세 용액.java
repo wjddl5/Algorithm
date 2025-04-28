@@ -3,13 +3,13 @@ import java.util.*;
 
 public class Main {
     static int N;
-    static long[] ar, answer=new long[3];
+    static int[] ar, answer=new int[3];
     static long min=Long.MAX_VALUE;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
-        ar = new long[N];
+        ar = new int[N];
         StringTokenizer st = new StringTokenizer(br.readLine());
         for(int i=0; i<N; i++) {
             ar[i] = Integer.parseInt(st.nextToken());
@@ -25,7 +25,7 @@ public class Main {
             int right = N - 1;
 
             while(mid < right) {
-                long sum = ar[left] + ar[mid] + ar[right];       
+                long sum = (long) ar[left] + ar[mid] + ar[right];       
                 minCheck(left, mid, right, sum);
                 
                 if(sum == 0) return;
