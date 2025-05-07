@@ -3,7 +3,7 @@ import java.util.*;
 
 public class Main {
     static ArrayList<ArrayList<Node>> tree = new ArrayList<>();
-    static int v, startRoot, max;
+    static int v;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -11,8 +11,7 @@ public class Main {
 
         v = Integer.parseInt(br.readLine());
 
-        tree.add(new ArrayList<>());
-        for (int i = 0; i < v; i++) {
+        for (int i = 0; i <= v; i++) {
             tree.add(new ArrayList<>());
         }
 
@@ -25,48 +24,52 @@ public class Main {
                 if (num == -1)
                     break;
 
-                int cost = Integer.parseInt(st.nextToken());
-                tree.get(root).add(new Node(num, cost));
+                int dist = Integer.parseInt(st.nextToken());
+                tree.get(root).add(new Node(num, dist));
             }
         }
         
-        bfs(1);
-        bfs(startRoot);
+        Node start = bfs(1);
+        Node end = bfs(start.num);
 
-        System.out.println(max);
+        System.out.println(end.dist);
     }
 
-    static void bfs(int root) {
+    static Node bfs(int root) {
         Queue<Node> q = new ArrayDeque<>();
         boolean[] visit = new boolean[v + 1];
-        q.offer(new Node(root, 0));
+
+        Node reNode = new Node(root, 0);
+        q.offer(reNode);
         visit[root] = true;
+
         while(!q.isEmpty()) {
-            Node n = q.poll();
-            int num = n.num;
-            int cost = n.cost;
-            
-            if(max < cost) {
-                max = cost;
-                startRoot = n.num;
+            Node node = q.poll();
+            int num = node.num;
+            int dist = node.dist;
+
+            if(reNode.dist < dist) {
+                reNode = node;
             }
 
-            for (Node node : tree.get(num)) {
-                if (visit[node.num]) continue;
-                q.offer(new Node(node.num, node.cost+cost));
-                visit[node.num] = true;
+            for (Node nextNode : tree.get(num)) {
+                if (visit[nextNode.num]) continue;
+                q.offer(new Node(nextNode.num, nextNode.dist + dist));
+                visit[nextNode.num] = true;
             }
         }
+
+        return reNode;
     }
 
 }
 
 class Node {
     int num;
-    int cost;
+    int dist;
 
-    Node(int num, int cost) {
+    Node(int num, int dist) {
         this.num = num;
-        this.cost = cost;
+        this.dist = dist;
     }
 }
