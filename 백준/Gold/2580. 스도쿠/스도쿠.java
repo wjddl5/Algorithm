@@ -3,12 +3,18 @@ import java.util.*;
 
 public class Main {
 
-    static int[][] map = new int[9][9];
+    static boolean[][] row, col, box;
+    static int[][] map;
     static ArrayList<int[]> point = new ArrayList<>();
 
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
+
+        map = new int[9][9];
+        row = new boolean[9][10];
+        col = new boolean[9][10];
+        box = new boolean[9][10];
         
         for(int i=0; i<9; i++) {
             st = new StringTokenizer(br.readLine());
@@ -16,6 +22,15 @@ public class Main {
                 int n = Integer.parseInt(st.nextToken());
                 map[i][j] = n;
                 if(n == 0) point.add(new int[] {i, j});
+                else {
+                    row[i][n] = true;
+                    col[j][n] = true;
+                    box[(i/3)*3 + (j/3)][n] = true;
+                    // 0 1 2
+                    // 3 4 5
+                    // 6 7 8 
+                    // 몇분면에 속하는지 체크
+                }
             }
         }
 
@@ -29,30 +44,24 @@ public class Main {
         int x = ar[0];
         int y = ar[1];
         for(int i=1; i<10; i++) {
-            if(checkGaroSero(x, y, i) && checkRange(x, y ,i)) {
+            if(check(x, y, i)) {
                 map[x][y] = i;
+                row[x][i] = true;
+                col[y][i] = true;
+                box[(x/3)*3 + (y/3)][i] = true;
+
                 dfs(depth - 1);
+
                 map[x][y] = 0;
+                row[x][i] = false;
+                col[y][i] = false;
+                box[(x/3)*3 + (y/3)][i] = false;
             }
         }   
     }
 
-    static boolean checkGaroSero(int x, int y, int num) {
-        for(int i=0; i<9; i++) {
-            if(map[x][i] == num || map[i][y] == num) return false;
-        }
-        return true;
-    }
-
-    static boolean checkRange(int x, int y, int num) {
-        x = (x / 3) * 3; // 0,1,2 => 0 , 3,4,5 => 3 , 6,7,8 => 6
-        y = (y / 3) * 3;
-        
-        for(int i=x; i<x+3; i++) {
-            for(int j=y; j<y+3; j++) {
-                if(map[i][j] == num) return false;
-            }
-        }
+    static boolean check(int x, int y, int num) {
+        if(row[x][num] || col[y][num] || box[(x/3)*3 + (y/3)][num]) return false;
         return true;
     }
 
