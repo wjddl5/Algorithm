@@ -47,6 +47,8 @@ public class Main {
 
         while(!pq.isEmpty()) {
             Node node = pq.poll();
+
+            if (dist[node.idx][K] < node.cost) continue;
             
             for(Node n : graph[node.idx]) {
                 int nCost = node.cost + n.cost;
